@@ -99,7 +99,7 @@ UMAP_density_plot = function(data,
         ggdraw()
     
       # save umap with labels
-      ggsave(file_location,p1, width = 11/2, height = 8/2, units = "in")
+      ggsave(file_location, p1, width = 11/2, height = 8/2, units = "in", device = "svg")
 }
 
 
@@ -184,7 +184,7 @@ generate_umap_plots <- function(assay_data, output_dir, condition, label_file_na
                       ggtitle = paste0("UMAP with ", label_name, " ", condition), 
                       legend_name = label_name, 
                       labels = labels_list[[label_name]], 
-                      file_location = file.path(output_dir, paste0("UMAP_", tolower(label_name), "_", condition, "_", label_file_name, ".pdf")), 
+                      file_location = file.path(output_dir, paste0("UMAP_", tolower(label_name), "_", condition, "_", label_file_name, ".svg")), 
                       colour_set = colour_list[[label_name]], 
                       patients_label = patients_label)
   }

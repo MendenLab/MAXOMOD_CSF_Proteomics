@@ -745,12 +745,12 @@ for (mod in setdiff(names(list.cluster.dat), "grey")) {
   
   # kmeans_k.2
   p_k2 <- plot_module_top10_boxplot(mod, dat_module, metadata, "kmeans_k.2")
-  ggsave(filename = paste0(output_dir,"/top6_module_proteins_expression-", mod, "_k2.pdf"),
+  ggsave(filename = paste0(output_dir,"/top6_module_proteins_expression-", mod, "_k2.svg"),
          plot = p_k2, width = 8, height = 6)
   
   # kmeans_k.3
   p_k3 <- plot_module_top10_boxplot(mod, dat_module, metadata, "kmeans_k.3")
-  ggsave(filename = paste0(output_dir,"/top6_module_proteins_expression-", mod, "_k3.pdf"),
+  ggsave(filename = paste0(output_dir,"/top6_module_proteins_expression-", mod, "_k3.svg"),
          plot = p_k3, width = 8, height = 6)
 }
 dev.off()

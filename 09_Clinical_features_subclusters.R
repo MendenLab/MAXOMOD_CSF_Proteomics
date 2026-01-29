@@ -26,7 +26,7 @@ make_df_for_plot <- function(se_obj, cluster_csv) {
 plot_cat_by_k2 <- function(
     df, k2_col = "k2", var_col = "condition",
     ha_colors = NULL, output_dir = ".", file_name = NULL,
-    linesize = 0.5, table_base_size = 8) {
+    linesize = 0.5, table_base_size = 12, return_plot_only = FALSE) {
   
   stopifnot(all(c(k2_col, var_col) %in% names(df)))
   d <- subset(df, !is.na(df[[k2_col]]) & !is.na(df[[var_col]]))
@@ -74,18 +74,28 @@ plot_cat_by_k2 <- function(
                        expand = expansion(mult = c(0, 0.08))) +
     #labs(title = ttl, x = k2_col, y = ylab) +
     labs( x = k2_col, y = ylab) +
-    theme_few() +
+    theme_classic(base_size = 14) +
     theme(panel.background = element_rect(size = linesize),
-          plot.title = element_text(hjust = 0))
+          plot.title = element_text(hjust = 0),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14),
+          legend.text = element_text(size = 12),
+          legend.title = element_text(size = 14))
   
-  if (is.null(file_name)) {
-    file_name <- sprintf("k2_vs_%s.pdf", var_col)
+  if (!return_plot_only) {
+    if (is.null(file_name)) {
+      file_name <- sprintf("k2_vs_%s.svg", var_col)
+    }
+    save_path <- file.path(output_dir, file_name)
+    ggsave(save_path, plot = p, width = 4.5, height = 4.2, dpi = 300)
+  } else {
+    save_path <- NULL
   }
-  save_path <- file.path(output_dir, file_name)
-  ggsave(save_path, plot = p, width = 4.5, height = 4.2, dpi = 300)
   
-  list(plot = p, table = tab, proportions = prop.table(tab, margin = 1),
-       test_type = test_type, test = test_res, save_path = save_path)
+  result <- list(plot = p, table = tab, proportions = prop.table(tab, margin = 1),
+                test_type = test_type, test = test_res)
+  if (!return_plot_only) result$save_path <- save_path
+  result
 }
 
 
@@ -145,8 +155,9 @@ plot_cont_by_k2 <- function(
     output_dir = ".",
     file_name  = NULL,
     linesize = 0.5,
-    table_base_size = 8,
-    test_pref = c("auto","parametric","nonparametric") 
+    table_base_size = 12,
+    test_pref = c("auto","parametric","nonparametric"),
+    return_plot_only = FALSE
 ){
   test_pref <- match.arg(test_pref)
   stopifnot(all(c(k2_col, var_col) %in% names(df)))
@@ -189,20 +200,30 @@ plot_cont_by_k2 <- function(
     ggplot2::scale_fill_manual(values = pal, name = k2_col) +
     #ggplot2::labs(title = ttl, x = k2_col, y = ylab) +
     ggplot2::labs( x = k2_col, y = ylab) +
-    ggthemes::theme_few() +
+    ggplot2::theme_classic(base_size = 14) +
     ggplot2::theme(panel.background = ggplot2::element_rect(size = linesize),
-                   plot.title = ggplot2::element_text(hjust = 0))
+                   plot.title = ggplot2::element_text(hjust = 0),
+                   axis.text = ggplot2::element_text(size = 12),
+                   axis.title = ggplot2::element_text(size = 14),
+                   legend.text = ggplot2::element_text(size = 12),
+                   legend.title = ggplot2::element_text(size = 14))
   
   # place the annotation table near the bottom
   y_min <- min(d[[var_col]], na.rm = TRUE)
   y_span <- diff(range(d[[var_col]], na.rm = TRUE))
   p <- p + ggplot2::annotation_custom(tbl_grob, ymin = y_min, ymax = y_min + 0.25*y_span)
   
-  if (is.null(file_name)) file_name <- sprintf("k2_vs_%s.pdf", var_col)
-  save_path <- file.path(output_dir, file_name)
-  ggplot2::ggsave(save_path, plot = p, width = 4.8, height = 4.2, dpi = 300)
+  if (!return_plot_only) {
+    if (is.null(file_name)) file_name <- sprintf("k2_vs_%s.svg", var_col)
+    save_path <- file.path(output_dir, file_name)
+    ggplot2::ggsave(save_path, plot = p, width = 4.8, height = 4.2, dpi = 300)
+  } else {
+    save_path <- NULL
+  }
   
-  list(plot = p, test_name = test_name, p_value = pval, save_path = save_path)
+  result <- list(plot = p, test_name = test_name, p_value = pval)
+  if (!return_plot_only) result$save_path <- save_path
+  result
 }
 # ===========================Command Parameters Setting=============================
 option_list <- list(
@@ -216,8 +237,20 @@ option_list <- list(
               type = "character", default = "09_Clinical_features_subclusters",
               help = "Output directory path."),
   make_option(c("--var", "-v"),
-              type = "character", default = "sex",
-              help = "Variable column name to compare against k2."),
+              type = "character", default = NULL,
+              help = "Single variable column name to compare against k2 (deprecated, use --vars)."),
+  make_option(c("--vars", "-V"),
+              type = "character", default = NULL,
+              help = "Comma-separated variable column names to compare against k2 (e.g., 'age,age_at_onset,Nfl,pNFh')."),
+  make_option(c("--merge", "-m"),
+              type = "character", default = "FALSE",
+              help = "Whether to merge multiple plots into one page (TRUE/FALSE)."),
+  make_option(c("--row", "-r"),
+              type = "integer", default = NULL,
+              help = "Number of rows for merged plot grid (optional, auto-calculated if not specified)."),
+  make_option(c("--col", "-C"),
+              type = "integer", default = NULL,
+              help = "Number of columns for merged plot grid (optional, auto-calculated if not specified)."),
   make_option(c("--seed", "-e"),
               type = "integer", default = 9,
               help = "Random seed.")
@@ -259,26 +292,135 @@ if (is.null(opt$seed)) {
   set.seed(seed)
 }
 
-if (is.null(opt$var)){
-  stop("Please provide the variable column name to compare against k2!")
-}else{
-  var_col = opt$var
+# Determine variables to plot
+if (!is.null(opt$vars)) {
+  var_cols <- trimws(strsplit(opt$vars, ",")[[1]])
+} else if (!is.null(opt$var)) {
+  var_cols <- opt$var
+} else {
+  stop("Please provide either --var or --vars with variable column name(s) to compare against k2!")
 }
+
+# Determine merge option
+merge_plots <- if (!is.null(opt$merge)) {
+  toupper(as.character(opt$merge)) %in% c("TRUE", "T", "YES", "Y", "1")
+} else {
+  FALSE
+}
+
+# If merge is TRUE, must have multiple variables
+if (merge_plots && length(var_cols) == 1) {
+  warning("Only one variable provided but merge=TRUE. Setting merge=FALSE.")
+  merge_plots <- FALSE
+}
+
 # -------------------
 # Main script
 # -------------------
 df <- make_df_for_plot(se, cluster_csv)
-if (class(df[[var_col]]) %in% c("character", "factor")){
-  plot_cat_by_k2(df, k2_col = "k2",
-                 var_col = var_col,
-                 ha_colors = ha_colors, output_dir = output_dir)
-} else{
-  plot_cont_by_k2(df,
-                  k2_col = "k2",
-                  var_col = var_col,
-                  test_pref = "auto",
-                  ha_colors = ha_colors,
-                  output_dir = output_dir)
+
+if (merge_plots && length(var_cols) > 1) {
+  # Merge multiple plots into one page
+  plot_list <- list()
+  
+  for (var_col in var_cols) {
+    if (!var_col %in% names(df)) {
+      warning(sprintf("Variable '%s' not found in data, skipping.", var_col))
+      next
+    }
+    
+    if (is.character(df[[var_col]]) || is.factor(df[[var_col]])) {
+      result <- plot_cat_by_k2(df, k2_col = "k2",
+                               var_col = var_col,
+                               ha_colors = ha_colors, 
+                               output_dir = output_dir,
+                               return_plot_only = TRUE)
+    } else {
+      result <- plot_cont_by_k2(df,
+                                k2_col = "k2",
+                                var_col = var_col,
+                                test_pref = "auto",
+                                ha_colors = ha_colors,
+                                output_dir = output_dir,
+                                return_plot_only = TRUE)
+    }
+    plot_list[[var_col]] <- result$plot
+  }
+  
+  if (length(plot_list) == 0) {
+    stop("No valid variables found to plot!")
+  }
+  
+  # Arrange plots in a grid
+  n_plots <- length(plot_list)
+  
+  # Use user-specified rows/cols if provided, otherwise auto-calculate
+  if (!is.null(opt$row) && !is.null(opt$col)) {
+    nrow <- opt$row
+    ncol <- opt$col
+    if (nrow * ncol < n_plots) {
+      warning(sprintf("Specified grid (%d x %d = %d) has fewer cells than plots (%d). Some plots may be omitted.", 
+                     nrow, ncol, nrow * ncol, n_plots))
+    }
+  } else if (!is.null(opt$row)) {
+    nrow <- opt$row
+    ncol <- ceiling(n_plots / nrow)
+  } else if (!is.null(opt$col)) {
+    ncol <- opt$col
+    nrow <- ceiling(n_plots / ncol)
+  } else {
+    # Auto-calculate grid layout
+    if (n_plots <= 2) {
+      ncol <- n_plots
+      nrow <- 1
+    } else if (n_plots <= 4) {
+      ncol <- 2
+      nrow <- 2
+    } else if (n_plots <= 6) {
+      ncol <- 3
+      nrow <- 2
+    } else {
+      ncol <- 3
+      nrow <- ceiling(n_plots / 3)
+    }
+  }
+  
+  # Create merged plot
+  merged_plot <- do.call(gridExtra::arrangeGrob, 
+                        c(plot_list, ncol = ncol, nrow = nrow))
+  
+  # Save merged plot
+  file_name <- paste0("k2_vs_merged_", paste(var_cols, collapse = "_"), ".svg")
+  save_path <- file.path(output_dir, file_name)
+  ggplot2::ggsave(save_path, plot = merged_plot, 
+                 width = 4.8 * ncol, 
+                 height = 4.2 * nrow, 
+                 dpi = 300)
+  
+  cat(sprintf("Merged plot saved to: %s\n", save_path))
+  
+} else {
+  # Plot each variable separately
+  for (var_col in var_cols) {
+    if (!var_col %in% names(df)) {
+      warning(sprintf("Variable '%s' not found in data, skipping.", var_col))
+      next
+    }
+    
+    if (is.character(df[[var_col]]) || is.factor(df[[var_col]])) {
+      plot_cat_by_k2(df, k2_col = "k2",
+                     var_col = var_col,
+                     ha_colors = ha_colors, 
+                     output_dir = output_dir)
+    } else {
+      plot_cont_by_k2(df,
+                      k2_col = "k2",
+                      var_col = var_col,
+                      test_pref = "auto",
+                      ha_colors = ha_colors,
+                      output_dir = output_dir)
+    }
+  }
 }
 
 
