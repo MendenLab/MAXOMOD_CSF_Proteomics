@@ -2,10 +2,6 @@
 
 This repository provides demo data and scripts to reproduce the bioinformatic pipelines and figures from the manuscript *Proteomic Profiling of Cerebrospinal Fluid Identifies Immune and Synapto-Axonal ALS Subtypes*.
 
-Analyses and data visualizations were conducted using R (v.4.2.3). Steps in the workflow use only publicly available software.
-
-This page follows the "Code and Software Submission Checklist" of Nature Research.
-
 ---
 
 # Project structure
@@ -25,7 +21,7 @@ This page follows the "Code and Software Submission Checklist" of Nature Researc
 # System requirements
 
 ## R and RStudio
-- R v.4.2.3 (or compatible). Install CRAN packages with `install.packages()`. For Bioconductor packages (e.g. `DEP`, `SummarizedExperiment`, `clusterProfiler`, `org.Hs.eg.db`) use `BiocManager::install("PackageName")`. Installation time depends on internet connection speed.
+- R v.4.2.3 (or compatible). Install CRAN packages with `install.packages()`. For Bioconductor packages (e.g. `DEP`, `SummarizedExperiment`, `clusterProfiler`, `org.Hs.eg.db`) use `BiocManager::install("PackageName")`.
 
 ### Packages
 
@@ -111,3 +107,6 @@ Demo data are under `demo/` (e.g. `demo/Discovery/`, `demo/Validation/`). Popula
 | Fig. 2b, 2c | `vignettes/Fig2bc_Clustering.Rmd` | AIC by clustering method and number of clusters (2b); Sankey plot of cluster assignment from k=2 to k=3 (2c). Exports `cluster_assignments_2.csv`. Uses `demo/Discovery/02_Missing_Inspection_subclusters/` (run time: < 1 min).|
 | Fig. 2d, 2e, 2f | `vignettes/Fig2def_volcano_scatter.Rmd` | Subclusters (alpha vs beta): Discovery volcano (2d), Validation volcano (2e), Discovery vs Validation signed FDR scatter (2f). Uses `demo/Discovery/` and `demo/Validation/` subcluster DE results (`03_Differential_expression_analysis_subclusters/`) (run time: < 1 min).|
 | Fig. 3a–3g | `vignettes/Fig3_WGCNA.Rmd` | WGCNA: dendrogram and module–trait bars (3a), eigengene networks (3b), top GO terms per module IC heatmap (3c), eigenprotein boxplots for turquoise and blue modules in Discovery/Validation/External (3d), module–trait heatmaps Discovery (3e) and Validation (3f), MEs vs clinical variables (3g). Saves PDFs to `Plots/Fig3_WGCNA/`. Uses `demo/Discovery/02_Missing_Inspection_subclusters/`, `08_Clustering_als/`, and optionally Validation/External inputs (run time: ~ 8 min).|
+
+## About issues:
+To report bugs, ask questions, or provide feedback, please use the GitHub Issues page.
