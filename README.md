@@ -1,5 +1,6 @@
 # MAXOMOD_CSF_Proteomics
-Bioinformatics analysis of ALS CSF proteomics.
+
+This repository provides demo data and scripts to reproduce the bioinformatic pipelines and figures from the manuscript *Proteomic Profiling of Cerebrospinal Fluid Identifies Immune and Synapto-Axonal ALS Subtypes*.
 
 Analyses and data visualizations were conducted using R (v.4.2.3). Steps in the workflow use only publicly available software.
 
