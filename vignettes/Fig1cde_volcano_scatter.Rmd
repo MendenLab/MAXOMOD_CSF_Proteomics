@@ -3,17 +3,25 @@ title: "Figure 1c, 1d, 1e — Discovery & Validation volcano plots and correlati
 author: "MAXOMOD_CSF"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: false
+    highlight: tango
   html_document:
     toc: true
     toc_float: true
     code_folding: show
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 params:
-  discovery_de: "demo/Discovery/03_Differential_expression_analysis/Differential_Expression_Results.rds"
-  validation_de: "demo/Validation/03_Differential_expression_analysis/Differential_Expression_Results.rds"
-  output: "Plots/Fig1cde_volcano_scatter"
+  discovery_de: demo/Discovery/03_Differential_expression_analysis/Differential_Expression_Results.rds
+  validation_de: demo/Validation/03_Differential_expression_analysis/Differential_Expression_Results.rds
+  output: Plots/Fig1cde_volcano_scatter
   seed: 9
   fdr_cutoff: 0.05
-  fdr_cutoff_scatter: 0.2   # FDR cutoff for Figure e (Discovery vs Validation scatter) only
+  fdr_cutoff_scatter: 0.2
 ---
 
 # Overview

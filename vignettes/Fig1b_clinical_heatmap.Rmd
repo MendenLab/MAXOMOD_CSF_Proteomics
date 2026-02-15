@@ -3,13 +3,21 @@ title: "Clinical heatmap visualization"
 author: "MAXOMOD_CSF"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: false
+    highlight: tango
   html_document:
     toc: true
     toc_float: true
     code_folding: show
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 params:
-  input: "demo/Discovery/02_Missing_Inspection/norm_imp_MinProb.rds"
-  output: "Plots/Fig1b_clinical_heatmap"
+  input: demo/Discovery/02_Missing_Inspection/norm_imp_MinProb.rds
+  output: Plots/Fig1b_clinical_heatmap
   seed: 9
 ---
 

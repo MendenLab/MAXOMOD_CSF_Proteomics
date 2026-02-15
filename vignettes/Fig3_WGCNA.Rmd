@@ -3,18 +3,26 @@ title: "Figure 3 — WGCNA (subclusters alpha vs beta)"
 author: "MAXOMOD_CSF"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: false
+    highlight: tango
   html_document:
     toc: true
     toc_float: true
     code_folding: show
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 params:
-  discovery_input: "demo/Discovery/02_Missing_Inspection_subclusters/norm_imp_MinProb.rds"
-  discovery_cluster: "demo/Discovery/08_Clustering_als/cluster_assignments_2.csv"
-  validation_input: "demo/Validation/02_Missing_Inspection_subclusters/norm_imp_MinProb.rds"
-  validation_cluster: "demo/Validation/08_Clustering_als/cluster_assignments_2.csv"
-  external_input: "demo/External/norm_imp_MinProb_als.rds"
-  external_cluster: "demo/External/cluster_assignments_2.csv"
-  output: "Plots/Fig3_WGCNA"
+  discovery_input: demo/Discovery/02_Missing_Inspection_subclusters/norm_imp_MinProb.rds
+  discovery_cluster: demo/Discovery/08_Clustering_als/cluster_assignments_2.csv
+  validation_input: demo/Validation/02_Missing_Inspection_subclusters/norm_imp_MinProb.rds
+  validation_cluster: demo/Validation/08_Clustering_als/cluster_assignments_2.csv
+  external_input: demo/External/norm_imp_MinProb_als.rds
+  external_cluster: demo/External/cluster_assignments_2.csv
+  output: Plots/Fig3_WGCNA
   seed: 9
   top_n_GO: 3
 ---

@@ -3,10 +3,18 @@ title: "Figure 1f — GSEA IC heatmap (Discovery & Validation)"
 author: "MAXOMOD_CSF"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: false
+    highlight: tango
   html_document:
     toc: true
     toc_float: true
     code_folding: show
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 params:
   input: "Discovery=demo/Discovery/06_GSEA/GSEA_result.rds,Validation=demo/Validation/06_GSEA/GSEA_result.rds"
   output: "Plots/Fig1f_GESA_IC"

@@ -3,10 +3,18 @@ title: "Figure 2d, 2e, 2f — Subclusters volcano and scatter (alpha vs beta)"
 author: "MAXOMOD_CSF"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: false
+    highlight: tango
   html_document:
     toc: true
     toc_float: true
     code_folding: show
+header-includes:
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 params:
   discovery_res: "demo/Discovery/03_Differential_expression_analysis_subclusters/res.rds"
   validation_res: "demo/Validation/03_Differential_expression_analysis_subclusters/res.rds"
