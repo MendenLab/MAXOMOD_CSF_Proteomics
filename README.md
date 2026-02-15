@@ -25,7 +25,7 @@ This page follows the "Code and Software Submission Checklist" of Nature Researc
 # System requirements
 
 ## R and RStudio
-- R v.4.2.3 (or compatible). Install CRAN packages with `install.packages()`. For Bioconductor packages (e.g. `DEP`, `SummarizedExperiment`, `clusterProfiler`, `org.Hs.eg.db`) use `BiocManager::install("PackageName")`.
+- R v.4.2.3 (or compatible). Install CRAN packages with `install.packages()`. For Bioconductor packages (e.g. `DEP`, `SummarizedExperiment`, `clusterProfiler`, `org.Hs.eg.db`) use `BiocManager::install("PackageName")`. Installation time depends on internet connection speed.
 
 ### Packages
 
